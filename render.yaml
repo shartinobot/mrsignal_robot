@@ -1,0 +1,28 @@
+services:
+  - type: worker
+    name: crypto-signal-bot
+    env: python
+    buildCommand: |
+      pip install --upgrade pip
+      pip install numpy==1.24.3
+      pip install pandas==1.5.3
+      pip install -r requirements.txt
+      python -c "import easyocr; easyocr.Reader(['en'], gpu=False)"
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_ID
+        sync: false
+      - key: SUPPORT_ID
+        sync: false
+      - key: CHANNEL_ID
+        sync: false
+      - key: SUBSCRIPTION_PRICE
+        value: "25"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    disk:
+      name: easyocr-models
+      mountPath: /tmp/easyocr_models
+      sizeGB: 2
